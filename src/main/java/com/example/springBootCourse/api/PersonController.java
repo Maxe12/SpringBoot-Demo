@@ -3,8 +3,10 @@ package com.example.springBootCourse.api;
 import com.example.springBootCourse.model.Person;
 import com.example.springBootCourse.service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.UUID;
 
@@ -19,7 +21,7 @@ public class PersonController {
     }
 
     @PostMapping
-    public void addPerson(@RequestBody Person person) {
+    public void addPerson(@RequestBody @Valid @NonNull Person person) {
         this.personService.addPerson(person);
     }
 
@@ -40,7 +42,8 @@ public class PersonController {
     }
 
     @PatchMapping(path = "{id}")
-    public void updatePersonById(@PathVariable("id") UUID id, @RequestBody Person personToUpdate) {
+    public void updatePersonById(@PathVariable("id") UUID id,
+                                 @Valid @NonNull @RequestBody Person personToUpdate) {
         this.personService.updatePersonById(id, personToUpdate);
     }
 }
