@@ -3,54 +3,34 @@ package com.example.springBootCourse.dao;
 import com.example.springBootCourse.model.Person;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-@Repository("fakeDao")
+@Repository("postgresImplementation")
 public class PersonDataAccessService implements PersonDao {
-    private static List<Person> DB = new ArrayList<>();
-
     @Override
     public int insertPerson(UUID id, Person person) {
-        DB.add(new Person(id, person.getName()));
-        return 1;
+        return 0;
     }
 
     @Override
     public List<Person> selectAllPersons() {
-        return DB;
+        return List.of(new Person(UUID.randomUUID(), "From Postgres DB")) ;
     }
 
     @Override
     public Optional<Person> selectPersonById(UUID id) {
-        return DB.stream()
-                .filter(person -> person.getId().equals(id))
-                .findFirst();
+        return Optional.empty();
     }
 
     @Override
     public int deletePersonById(UUID id) {
-        Optional<Person> maybePerson = selectPersonById(id);
-        if(maybePerson.isEmpty()){
-            return 0;
-        }
-        DB.remove(maybePerson.get());
-        return 1;
+        return 0;
     }
 
     @Override
     public int updatePersonById(UUID id, Person person) {
-        return selectPersonById(id)
-                .map(p -> {
-                    int indexOfPersonToUpdate = DB.indexOf(p);
-                    if(indexOfPersonToUpdate >= 0){
-                        DB.set(indexOfPersonToUpdate, new Person(id, person.getName()));
-                        return 1;
-                    }
-                    return 0;
-                })
-                .orElse(0);
+        return 0;
     }
 }
